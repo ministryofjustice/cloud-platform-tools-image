@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM FROM docker:18.05.0-ce-git
 
 ENV \
   HELM_VERSION=2.9.1 \
