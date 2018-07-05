@@ -27,7 +27,7 @@ for e in $(env | grep "${ENV_INFO_PREFIX}" | sed -E 's/^'"${ENV_INFO_PREFIX}"'_(
     --token="${_etoken}"
   kubectl config set-context "${_cname}" \
     --cluster="${_ename}" \
-    --user="${_ename}" \
+    --user="${_cname}" \
     --namespace="${_enamespace}"
 
   echo ">>> configured environment '${e}'"
