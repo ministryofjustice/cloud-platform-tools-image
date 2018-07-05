@@ -13,9 +13,11 @@ The repository produces two images:
   - `helm`
   - `kubectl`
 
-Docker images are versioned by commit SHA and are available at `926803513772.dkr.ecr.eu-west-1.amazonaws.com/cloud-platform/tools`.
+## Tagging
+Docker images are tagged using the git commit SHA and are available at `926803513772.dkr.ecr.eu-west-1.amazonaws.com/cloud-platform/tools`.
 
-CircleCI image tags used the `-circleci` suffix, eg.: `926803513772.dkr.ecr.eu-west-1.amazonaws.com/cloud-platform/tools:latest-circleci`.
+For the base image, the latest version is also tagged as `latest`.
+For the CircleCI images, the git commit SHA is suffixed with `-circleci`, the latest version is tagged as `circleci`.
 
 ## CircleCI
 

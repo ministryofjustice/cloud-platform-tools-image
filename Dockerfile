@@ -14,6 +14,7 @@ RUN \
     git \
     jq \
     python3 \
+  && pip install --upgrade pip \
   && pip3 install awscli \
   && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
   && curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 \
