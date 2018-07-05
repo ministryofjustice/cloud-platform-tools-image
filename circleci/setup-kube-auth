@@ -19,12 +19,13 @@ for e in $(env | grep "${ENV_INFO_PREFIX}" | sed -E 's/^'"${ENV_INFO_PREFIX}"'_(
   [ -z "${!_ev}" ] && echo ">>> missing ${_ev}, cannot configure environment '${e}'" && continue
   _etoken="${!_ev}"
 
+  _cname="$(echo -n ${e} | tr '[:upper:]' '[:lower:]')"
   kubectl config set-cluster "${_ename}" \
     --certificate-authority="${_ecacert}" \
     --server="${_ehost}"
-  kubectl config set-credentials "${_ename}" \
+  kubectl config set-credentials "${_cname}" \
     --token="${_etoken}"
-  kubectl config set-context "$(echo -n ${e} | tr '[:upper:]' '[:lower:]')" \
+  kubectl config set-context "${_cname}" \
     --cluster="${_ename}" \
     --user="${_ename}" \
     --namespace="${_enamespace}"
