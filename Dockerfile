@@ -12,6 +12,7 @@ RUN \
     --no-progress \
     curl \
     git \
+    grep \
     jq \
     python3 \
   && pip3 install --upgrade pip \
