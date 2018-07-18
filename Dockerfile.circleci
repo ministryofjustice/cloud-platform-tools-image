@@ -11,8 +11,8 @@ RUN \
     --no-cache \
     --no-progress \
     bash \
+    build-base \
     curl \
-    gcc \
     git \
     grep \
     jq \

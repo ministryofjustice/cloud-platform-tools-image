@@ -10,8 +10,8 @@ RUN \
   apk add \
     --no-cache \
     --no-progress \
+    build-base \
     curl \
-    gcc \
     git \
     grep \
     jq \
