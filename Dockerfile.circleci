@@ -12,6 +12,7 @@ RUN \
     --no-progress \
     bash \
     curl \
+    gcc \
     git \
     grep \
     jq \

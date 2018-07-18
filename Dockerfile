@@ -11,6 +11,7 @@ RUN \
     --no-cache \
     --no-progress \
     curl \
+    gcc \
     git \
     grep \
     jq \
