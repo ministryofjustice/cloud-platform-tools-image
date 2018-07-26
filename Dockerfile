@@ -11,6 +11,7 @@ RUN \
     --no-cache \
     --no-progress \
     build-base \
+    ca-certificates \
     curl \
     git \
     grep \
