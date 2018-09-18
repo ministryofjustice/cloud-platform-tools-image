@@ -26,6 +26,8 @@ The CircleCI image is based on the upstream `docker` image and includes `setup-k
 For each "environment" (kuberenetes context) that's required in CircleCI, it expects to find the following environment variables:
 - `KUBE_ENV_XYZ_NAME`, the name of the cluster (which also determines its host)
 - `KUBE_ENV_XYZ_NAMESPACE`, the namespace to target in that cluster
-- `KUBE_ENV_XYZ_CACERT` and`KUBE_ENV_XYZ_TOKEN`, from ServiceAccount
+- `KUBE_ENV_XYZ_CACERT` and`KUBE_ENV_XYZ_TOKEN`, from [ServiceAccount][how-to-serviceaccount]
 
 It will configure `kubectl` with a context named `xyz`.
+
+[how-to-serviceaccount]: https://ministryofjustice.github.io/cloud-platform-user-docs/02-deploying-an-app/004-use-circleci-to-upgrade-app/#creating-a-service-account-for-circleci
