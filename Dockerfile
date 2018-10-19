@@ -17,6 +17,7 @@ RUN \
     grep \
     jq \
     python3 \
+    bash \
   && pip3 install --upgrade pip \
   && pip3 install awscli \
   && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
