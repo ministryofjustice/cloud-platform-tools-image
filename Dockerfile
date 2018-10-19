@@ -10,6 +10,7 @@ RUN \
   apk add \
     --no-cache \
     --no-progress \
+    bash \
     build-base \
     ca-certificates \
     curl \
