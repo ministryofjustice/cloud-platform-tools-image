@@ -14,6 +14,7 @@ RUN \
     build-base \
     ca-certificates \
     curl \
+    docker \
     git \
     grep \
     jq \
