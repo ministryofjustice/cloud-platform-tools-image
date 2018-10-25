@@ -26,7 +26,6 @@ RUN \
   && cd git-crypt && make && make install && cd - && rm -rf git-crypt \
   && chmod +x /usr/local/bin/*
 
-COPY circleci/setup-kube-auth /usr/local/bin/setup-kube-auth
-COPY circleci/tag-and-push-docker-image /usr/local/bin/tag-and-push-docker-image
+COPY circleci/* /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/setup-kube-auth"]

@@ -1,0 +1,60 @@
+#!/bin/bash -e
+
+function usage() {
+  cat <<-EOF
+
+Usage: $0 <target environment> <Slack webhook url>
+
+  This script will notify Slack that the "commit URL" has been deployed to the "target environment".
+
+  The commit URL is a link to the deployed commit in GitHub.
+  The notification will contain a link to the CircleCI build doing the deploy.
+
+Example:
+
+  # If the active project is "FALA" and the commit is "5a42eb3"
+  $ notify-slack-after-deployment staging
+  ok
+
+Will produce:
+
+  :tada: Deployed https://github.com/ministryofjustice/fala/commit/5a42eb3 to *staging*
+  <View build>
+
+  The "view build" button will link to https://circleci.com/gh/ministryofjustice/fala/191.
+
+Requires the following environment variables:
+
+  - \$CIRCLE_BUILD_URL
+  - \$CIRCLE_PROJECT_REPONAME
+  - \$CIRCLE_PROJECT_USERNAME
+  - \$CIRCLE_SHA1
+EOF
+}
+
+target_environment="$1"
+webhook_url="$2"
+if [ -z "$target_environment" ] || [ -z "$webhook_url" ]; then
+  usage
+  exit 1
+fi
+
+github_repo_url="https://github.com/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_PROJECT_USERNAME}"
+build_url="$CIRCLE_BUILD_URL"
+short_sha=${CIRCLE_SHA1:0:7}
+
+payload_file="$(mktemp)"
+cat <<END >"$payload_file"
+{
+  "text": ":tada: Deployed \`${github_repo_url}/commit/$short_sha\` to *$target_environment*.",
+  "attachments": [
+    {
+      "fallback": "<$build_url|View build>",
+      "actions": [{"type": "button", "text": "View build", "url": "$build_url"}]
+    }
+  ]
+}
+END
+
+jq . < "$payload_file"
+curl --request POST --data @"$payload_file" --header "Content-Type: application/json" "$webhook_url"
