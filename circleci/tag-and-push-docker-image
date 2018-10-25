@@ -1,0 +1,60 @@
+#!/bin/sh -e
+
+function usage() {
+  echo
+  cat <<EOF
+Usage: $0 <built image tag> <remote docker image>
+
+  This script will take the git branch name and git SHA1 from CircleCI and create and push tags
+  to the given remote Docker repository.
+
+  On the "master" branch, it will create and push the following tags:
+
+    - <remote docker image>:SHA1
+    - <remote docker image>:branch_name.short_SHA1
+    - <remote docker image>:branch_name
+
+  On feature branches, it will create and push the following tags:
+
+    - <remote docker image>:branch_name.short_SHA1
+    - <remote docker image>:branch_name
+
+Examples:
+
+  $ docker build . --tag=app
+  <snip>
+  Successfully tagged app:latest
+
+  $ tag-and-push-docker-image app 926803513772.dkr.ecr.eu-west-1.amazonaws.com/laa-get-access/laa-fala
+  Tagging and pushing 926803513772.dkr.ecr.eu-west-1.amazonaws.com/laa-get-access/laa-fala:502f1c2d82a2c12d70482b1361a0d46e875a7b51...
+  Tagging and pushing 926803513772.dkr.ecr.eu-west-1.amazonaws.com/laa-get-access/laa-fala:master.502f1c2...
+  Tagging and pushing 926803513772.dkr.ecr.eu-west-1.amazonaws.com/laa-get-access/laa-fala:master...
+EOF
+}
+
+function tag_and_push() {
+  tag="$1"
+  echo
+  echo "Tagging and pushing $tag..."
+  docker tag $built_tag $tag
+  docker push $tag
+}
+
+
+built_tag="$1"
+docker_repository="$2"
+
+if [ -z "$built_tag" -o -z "$docker_repository" ]; then
+  usage
+  exit 1
+fi
+
+safe_git_branch=${CIRCLE_BRANCH//\//-}
+short_sha="$(git rev-parse --short=7 $CIRCLE_SHA1)"
+
+if [ "$CIRCLE_BRANCH" == "master" ]; then
+  tag_and_push "$docker_repository:$CIRCLE_SHA1"
+fi
+
+tag_and_push "$docker_repository:$safe_git_branch.$short_sha"
+tag_and_push "$docker_repository:$safe_git_branch"
