@@ -50,7 +50,7 @@ if [ -z "$built_tag" ] || [ -z "$docker_repository" ]; then
 fi
 
 safe_git_branch=${CIRCLE_BRANCH//\//-}
-short_sha="$(git rev-parse --short=7 $CIRCLE_SHA1)"
+short_sha=${CIRCLE_SHA1:0:7}
 
 if [ "$CIRCLE_BRANCH" == "master" ]; then
   tag_and_push "$docker_repository:$CIRCLE_SHA1"
