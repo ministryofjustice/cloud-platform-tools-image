@@ -36,8 +36,8 @@ function tag_and_push() {
   tag="$1"
   echo
   echo "Tagging and pushing $tag..."
-  docker tag $built_tag $tag
-  docker push $tag
+  docker tag "$built_tag" "$tag"
+  docker push "$tag"
 }
 
 
