@@ -44,7 +44,7 @@ function tag_and_push() {
 built_tag="$1"
 docker_repository="$2"
 
-if [ -z "$built_tag" -o -z "$docker_repository" ]; then
+if [ -z "$built_tag" ] || [ -z "$docker_repository" ]; then
   usage
   exit 1
 fi
