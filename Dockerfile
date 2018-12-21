@@ -15,7 +15,6 @@ RUN \
     ca-certificates \
     coreutils \
     curl \
-    docker \
     findutils \
     git \
     grep \
