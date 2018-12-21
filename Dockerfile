@@ -13,12 +13,15 @@ RUN \
     bash \
     build-base \
     ca-certificates \
+    coreutils \
     curl \
     docker \
+    findutils \
     git \
     grep \
     jq \
     python3 \
+    util-linux \
   && pip3 install --upgrade pip \
   && pip3 install awscli \
   && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
