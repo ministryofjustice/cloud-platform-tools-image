@@ -3,8 +3,6 @@ FROM golang:1.12.2-alpine3.9 as pingdom_builder
 RUN apk add git
 RUN go get -v github.com/russellcardullo/terraform-provider-pingdom
 
-RUN ls -latr
-
 FROM alpine:3.7
 
 ENV \
@@ -41,4 +39,3 @@ RUN \
   && chmod +x /usr/local/bin/*
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
-
