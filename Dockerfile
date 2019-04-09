@@ -1,3 +1,8 @@
+# Build Pingdom Terraform provider
+FROM golang:1.12.2-alpine3.9 as pingdom_builder
+RUN apk add git
+RUN go get -v github.com/russellcardullo/terraform-provider-pingdom
+
 FROM alpine:3.7
 
 ENV \
@@ -33,4 +38,4 @@ RUN \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/ \
   && chmod +x /usr/local/bin/*
 
- 
+COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
