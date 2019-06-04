@@ -2,7 +2,7 @@ FROM docker:18.05.0-ce-git
 
 ENV \
   HELM_VERSION=2.11.0 \
-  KUBECTL_VERSION=1.10.12
+  KUBECTL_VERSION=1.11.10
 
 RUN \
   apk add \
