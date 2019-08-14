@@ -27,6 +27,7 @@ RUN \
     jq \
     postgresql-client \
     python3 \
+    ruby \
     util-linux \
   && pip3 install --upgrade pip \
   && pip3 install awscli \
