@@ -14,7 +14,7 @@ The repository produces two images:
   - `kubectl`
 
 ## Tagging
-Docker images are tagged using the git commit SHA and are available at `926803513772.dkr.ecr.eu-west-1.amazonaws.com/cloud-platform/tools`.
+Docker images are tagged using the git commit SHA and are available at `754256621582.dkr.ecr.eu-west-2.amazonaws.com/cloud-platform/tools`.
 
 For the base image, the latest version is also tagged as `latest`.
 For the CircleCI images, the git commit SHA is suffixed with `-circleci`, the latest version is tagged as `circleci`.
@@ -30,4 +30,4 @@ For each "environment" (kuberenetes context) that's required in CircleCI, it exp
 
 It will configure `kubectl` with a context named `xyz`.
 
-[how-to-serviceaccount]: https://ministryofjustice.github.io/cloud-platform-user-docs/02-deploying-an-app/004-use-circleci-to-upgrade-app/#creating-a-service-account-for-circleci
+[how-to-serviceaccount]: https://user-guide.cloud-platform.service.justice.gov.uk/tasks.html#creating-a-service-account-for-circleci
