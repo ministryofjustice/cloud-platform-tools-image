@@ -30,4 +30,4 @@ For each "environment" (kuberenetes context) that's required in CircleCI, it exp
 
 It will configure `kubectl` with a context named `xyz`.
 
-[how-to-serviceaccount]: https://ministryofjustice.github.io/cloud-platform-user-docs/02-deploying-an-app/004-use-circleci-to-upgrade-app/#creating-a-service-account-for-circleci
+[how-to-serviceaccount]: https://user-guide.cloud-platform.service.justice.gov.uk/tasks.html#creating-a-service-account-for-circleci
