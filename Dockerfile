@@ -29,6 +29,9 @@ RUN \
     python3 \
     ruby \
     util-linux \
+    gnupg \
+    openssl \
+    openssl-dev \
   && pip3 install --upgrade pip \
   && pip3 install awscli \
   && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
@@ -39,5 +42,7 @@ RUN \
   && curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
   && mkdir -p ~/.terraform.d/plugins \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/ \
+  && git clone https://github.com/AGWA/git-crypt.git \
+  && cd git-crypt && make && make install && cd - && rm -rf git-crypt
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
