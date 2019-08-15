@@ -25,6 +25,7 @@ RUN \
     git \
     grep \
     jq \
+    postgresql-client \
     python3 \
     util-linux \
   && pip3 install --upgrade pip \
