@@ -6,7 +6,7 @@ RUN go get -v github.com/russellcardullo/terraform-provider-pingdom
 FROM alpine:3.7
 
 ENV \
-  HELM_VERSION=2.11.0 \
+  HELM_VERSION=2.14.3 \
   KOPS_VERSION=1.10.1 \
   KUBECTL_VERSION=1.11.10 \
   TERRAFORM_VERSION=0.11.14 \
