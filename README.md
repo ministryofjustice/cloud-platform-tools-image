@@ -4,9 +4,13 @@ The repository produces two images:
 
 - the main image includes:
   - `aws`
+  - `git-crypt`
   - `helm`
   - `kops`
   - `kubectl`
+  - `openssh-keygen`
+  - `postgresql-client`
+  - `ruby`
   - `terraform`
 - the CircleCI build image includes:
   - `aws`
