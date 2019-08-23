@@ -56,5 +56,7 @@ RUN \
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom ${HOME}/.terraform.d/plugins/
 
+RUN chown -R ${USER}:${GROUP} ${HOME}
+
 USER ${UID}
 WORKDIR ${HOME}
