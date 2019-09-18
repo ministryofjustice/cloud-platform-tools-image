@@ -3,36 +3,44 @@ FROM golang:1.12.2-alpine3.9 as pingdom_builder
 RUN apk add git
 RUN go get -v github.com/russellcardullo/terraform-provider-pingdom
 
-FROM alpine:3.7
+FROM ruby:2.6.3-alpine
 
 ENV \
   HELM_VERSION=2.14.3 \
   KOPS_VERSION=1.10.1 \
   KUBECTL_VERSION=1.11.10 \
-  TERRAFORM_VERSION=0.11.14 \
-  TERRAFORM_AUTH0_VERSION=0.1.18
+  TERRAFORM_AUTH0_VERSION=0.1.18 \
+  TERRAFORM_VERSION=0.11.14 
 
 RUN \
   apk add \
     --no-cache \
     --no-progress \
-    bash \
+    --update \
+    --virtual \
+    build-deps \
     build-base \
+    bash \
     ca-certificates \
     coreutils \
     curl \
     findutils \
     git \
+    gnupg \
     grep \
     jq \
-    postgresql-client \
-    python3 \
-    ruby \
-    util-linux \
-    gnupg \
+    libc-dev \
+    libxml2-dev \
+    libxslt-dev \
+    linux-headers \
     openssl \
     openssl-dev \
     openssh-keygen \
+    postgresql-client \
+    python3 \
+    ruby-dev \
+    util-linux \
+  \
   && pip3 install --upgrade pip \
   && pip3 install awscli \
   && curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
@@ -45,5 +53,14 @@ RUN \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/ \
   && git clone https://github.com/AGWA/git-crypt.git \
   && cd git-crypt && make && make install && cd - && rm -rf git-crypt
+
+# Build integration test environment
+RUN mkdir -p /app/integration-test/; cd /app/integration-test \
+      && wget \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile.lock \
+      \
+      && gem install bundler \
+      && bundle install
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
