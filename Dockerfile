@@ -1,14 +1,14 @@
 # Build Pingdom Terraform provider
 FROM golang:1.12.2-alpine3.9 as pingdom_builder
 RUN apk add git
-RUN go get -v github.com/russellcardullo/terraform-provider-pingdom
+RUN GO111MODULE=on go get -v github.com/russellcardullo/terraform-provider-pingdom@d49195a7567560c3ca4d64b524c32ce8089ff26a
 
 FROM ruby:2.6.3-alpine
 
 ENV \
   HELM_VERSION=2.14.3 \
-  KOPS_VERSION=1.10.1 \
-  KUBECTL_VERSION=1.11.10 \
+  KOPS_VERSION=1.13.0 \
+  KUBECTL_VERSION=1.13.4 \
   TERRAFORM_AUTH0_VERSION=0.1.18 \
   TERRAFORM_VERSION=0.11.14 
 
