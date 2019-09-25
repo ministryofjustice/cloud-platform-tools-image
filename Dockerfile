@@ -66,3 +66,5 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
 
 RUN apk add joe
+
+ENTRYPOINT /bin/bash
