@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.1
+TAG := 1.3
 
 build:
 	docker build -t $(IMAGE) .
