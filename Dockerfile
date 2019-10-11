@@ -62,7 +62,8 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile.lock \
       \
       && gem install bundler \
-      && bundle install
+      && bundle install \
+      && gem install octokit
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
 
