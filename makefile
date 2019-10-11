@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.3
+TAG := 1.4
 
 # This image is built and pushed via a concourse pipeline:
 #
@@ -8,12 +8,15 @@ TAG := 1.3
 # So, it should not normally be necessary to use the build process defined here.
 #
 
-build:
+build: .built-docker-image
+
+.built-docker-image: Dockerfile makefile
 	docker build -t $(IMAGE) .
+	touch .built-docker-image
 
 tag:
 	docker tag $(IMAGE) $(IMAGE):$(TAG)
 
-push:
+push: .built-docker-image
 	docker tag $(IMAGE) $(IMAGE):$(TAG)
 	docker push $(IMAGE):$(TAG)

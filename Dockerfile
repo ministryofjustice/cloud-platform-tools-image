@@ -10,7 +10,7 @@ ENV \
   KOPS_VERSION=1.13.2 \
   KUBECTL_VERSION=1.13.11 \
   TERRAFORM_AUTH0_VERSION=0.1.18 \
-  TERRAFORM_VERSION=0.11.14 
+  TERRAFORM_VERSION=0.11.14
 
 RUN \
   apk add \
@@ -66,4 +66,4 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
 
-ENTRYPOINT /bin/bash
+CMD /bin/bash
