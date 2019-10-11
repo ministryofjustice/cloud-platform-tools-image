@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.4-test
+TAG := 1.4
 
 # This image is built and pushed via a concourse pipeline:
 #
