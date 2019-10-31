@@ -3,6 +3,14 @@ FROM golang:1.12.2-alpine3.9 as pingdom_builder
 RUN apk add git
 RUN GO111MODULE=on go get -v github.com/russellcardullo/terraform-provider-pingdom@d49195a7567560c3ca4d64b524c32ce8089ff26a
 
+# Build Concourse Terraform provider
+FROM golang:1.12.2-alpine3.9 as concourse_builder
+RUN apk add git make
+RUN \
+    git clone https://github.com/alphagov/terraform-provider-concourse.git && \
+    cd terraform-provider-concourse && \
+    make build
+
 FROM ruby:2.6.3-alpine
 
 ENV \
@@ -65,5 +73,6 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && bundle install
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
+COPY --from=concourse_builder /go/terraform-provider-concourse /root/.terraform.d/plugins/
 
 ENTRYPOINT /bin/bash
