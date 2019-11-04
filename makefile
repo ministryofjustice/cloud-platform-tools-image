@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.4
+TAG := concourse
 
 build:
 	docker build -t $(IMAGE) .
