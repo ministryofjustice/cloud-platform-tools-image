@@ -10,6 +10,7 @@ RUN \
     git clone https://github.com/alphagov/terraform-provider-concourse.git && \
     cd terraform-provider-concourse && \
     make build
+RUN GO111MODULE=on go get github.com/mikefarah/yq@2.4.1
 
 FROM ruby:2.6.3-alpine
 
@@ -18,7 +19,8 @@ ENV \
   KOPS_VERSION=1.13.2 \
   KUBECTL_VERSION=1.13.11 \
   TERRAFORM_AUTH0_VERSION=0.1.18 \
-  TERRAFORM_VERSION=0.11.14 
+  TERRAFORM_VERSION=0.11.14 \
+  YQ_VERSION=2.4.1
 
 RUN \
   apk add \
@@ -56,6 +58,7 @@ RUN \
   && curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 \
   && curl -sL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar -xzC /usr/local/bin --strip-components 1 linux-amd64/helm \
   && curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin - \
+  && curl -sL /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_arm64 \
   && chmod +x /usr/local/bin/* \
   && curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
   && mkdir -p ~/.terraform.d/plugins \
@@ -74,5 +77,6 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
 
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
 COPY --from=concourse_builder /go/terraform-provider-concourse /root/.terraform.d/plugins/
+COPY --from=concourse_builder /go/bin/yq /usr/local/bin/
 
 ENTRYPOINT /bin/bash
