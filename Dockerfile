@@ -1,8 +1,3 @@
-# Build Pingdom Terraform provider
-FROM golang:1.12.2-alpine3.9 as pingdom_builder
-RUN apk add git
-RUN GO111MODULE=on go get -v github.com/russellcardullo/terraform-provider-pingdom@d49195a7567560c3ca4d64b524c32ce8089ff26a
-
 FROM ruby:2.6.3-alpine
 
 ENV \
@@ -10,6 +5,7 @@ ENV \
   KOPS_VERSION=1.13.2 \
   KUBECTL_VERSION=1.13.11 \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
+  TERRAFORM_PINGDOM_VERSION=1.1.1 \
   TERRAFORM_VERSION=0.11.14 \
   TERRAFORM12_VERSION=0.12.13
 
@@ -85,7 +81,9 @@ RUN mkdir -p ~/.terraform.d/plugins
 RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/
 
-# Install pingdom provider (needs the ~/.terraform.d/plugins directory from the previous step)
-COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
+# Install Pingdom provider
+RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
+  && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
+  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
 
 CMD /bin/bash
