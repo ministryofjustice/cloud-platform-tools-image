@@ -80,9 +80,10 @@ RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/downloa
   && mkdir -p ~/.terraform.d/plugins \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/
 
+# Install pingdom provider (needs the ~/.terraform.d/plugins directory from the previous step)
+COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
+
 # Ensure everything is executable
 RUN chmod +x /usr/local/bin/*
-
-COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
 
 CMD /bin/bash
