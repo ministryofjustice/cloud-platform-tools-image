@@ -75,6 +75,9 @@ RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terra
 # Install terraform 12
 RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM12_VERSION}/terraform_${TERRAFORM12_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform12
 
+# Ensure everything is executable
+RUN chmod +x /usr/local/bin/*
+
 # Install terraform auth0 provider
 RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
   && mkdir -p ~/.terraform.d/plugins \
@@ -82,8 +85,5 @@ RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/downloa
 
 # Install pingdom provider (needs the ~/.terraform.d/plugins directory from the previous step)
 COPY --from=pingdom_builder /go/bin/terraform-provider-pingdom /root/.terraform.d/plugins/
-
-# Ensure everything is executable
-RUN chmod +x /usr/local/bin/*
 
 CMD /bin/bash
