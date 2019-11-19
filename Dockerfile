@@ -9,8 +9,9 @@ ENV \
   HELM_VERSION=2.14.3 \
   KOPS_VERSION=1.13.2 \
   KUBECTL_VERSION=1.13.11 \
-  TERRAFORM_VERSION=0.11.14
   TERRAFORM_AUTH0_VERSION=0.2.1 \
+  TERRAFORM_VERSION=0.11.14 \
+  TERRAFORM12_VERSION=0.12.13
 
 RUN \
   apk add \
@@ -70,6 +71,9 @@ RUN curl -sL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION
 
 # Install terraform
 RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin -
+
+# Install terraform 12
+RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM12_VERSION}/terraform_${TERRAFORM12_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform12
 
 # Install terraform auth0 provider
 RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
