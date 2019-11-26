@@ -1,3 +1,11 @@
+# Build Concourse Terraform provider
+FROM golang:1.12.2-alpine3.9 as concourse_builder
+RUN apk add git make
+RUN \
+    git clone https://github.com/alphagov/terraform-provider-concourse.git && \
+    cd terraform-provider-concourse && \
+    make build
+
 FROM ruby:2.6.3-alpine
 
 ENV \
@@ -51,6 +59,8 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       \
       && gem install bundler \
       && bundle install
+
+COPY --from=concourse_builder /go/terraform-provider-concourse /root/.terraform.d/plugins/
 
 # Install git-crypt
 RUN git clone https://github.com/AGWA/git-crypt.git \
