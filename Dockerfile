@@ -15,8 +15,7 @@ ENV \
   ISTIOCTL_VERSION=1.4.0 \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
-  TERRAFORM_VERSION=0.11.14 \
-  TERRAFORM12_VERSION=0.12.13
+  TERRAFORM_VERSION=0.12.13
 
 RUN \
   apk add \
@@ -71,7 +70,7 @@ RUN git clone https://github.com/AGWA/git-crypt.git \
 RUN curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 
 # Install istioctl
-RUN curl -sL https://github.com/istio/istio/releases/download/${ISTIOCTL_VERSION}/istio-${ISTIOCTL_VERSION}-linux.tar.gz | tar -xzC /usr/local/bin --strip-components 1 bin/istioctl
+RUN curl -sL https://github.com/istio/istio/releases/download/${ISTIOCTL_VERSION}/istio-${ISTIOCTL_VERSION}-linux.tar.gz | tar -xzC /usr/local/bin --strip-components 2 istio-${ISTIOCTL_VERSION}/bin/istioctl
 
 # Install kops
 RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
@@ -81,9 +80,6 @@ RUN curl -sL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION
 
 # Install terraform
 RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin -
-
-# Install terraform 12
-RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM12_VERSION}/terraform_${TERRAFORM12_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform12
 
 # Ensure everything is executable
 RUN chmod +x /usr/local/bin/*
