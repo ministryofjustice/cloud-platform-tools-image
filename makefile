@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.6
+TAG := knative
 
 # This image is built and pushed via a concourse pipeline:
 #

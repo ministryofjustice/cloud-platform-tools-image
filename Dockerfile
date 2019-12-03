@@ -9,9 +9,10 @@ RUN \
 FROM ruby:2.6.3-alpine
 
 ENV \
-  HELM_VERSION=2.14.3 \
-  KOPS_VERSION=1.13.2 \
-  KUBECTL_VERSION=1.13.11 \
+  HELM_VERSION=2.16.1 \
+  KOPS_VERSION=1.15.0 \
+  KUBECTL_VERSION=1.15.3 \
+  ISTIOCTL_VERSION=1.4.0 \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
   TERRAFORM_VERSION=0.11.14 \
@@ -68,6 +69,9 @@ RUN git clone https://github.com/AGWA/git-crypt.git \
 
 # Install kubectl
 RUN curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+
+# Install istioctl
+RUN curl -sL https://github.com/istio/istio/releases/download/${ISTIOCTL_VERSION}/istio-${ISTIOCTL_VERSION}-linux.tar.gz | tar -xzC /usr/local/bin --strip-components 1 bin/istioctl
 
 # Install kops
 RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
