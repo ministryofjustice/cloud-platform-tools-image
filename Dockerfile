@@ -15,7 +15,8 @@ ENV \
   ISTIOCTL_VERSION=1.4.0 \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
-  TERRAFORM_VERSION=0.12.13
+  TERRAFORM_VERSION=0.12.13 \
+  AWS_IAM_AUTHENTICATOR_VERSION="1.14.6/2019-08-22"
 
 RUN \
   apk add \
@@ -90,6 +91,9 @@ RUN mkdir -p ~/.terraform.d/plugins
 # Install terraform auth0 provider
 RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
   && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/
+
+# Install AWS IAM Authenticator
+RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/${AWS_IAM_AUTHENTICATOR_VERSION}/bin/linux/amd64/aws-iam-authenticator && chmod +x /usr/local/bin/aws-iam-authenticator
 
 # Install Pingdom provider
 RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
