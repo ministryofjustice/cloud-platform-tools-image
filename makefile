@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := knative
+TAG := 1.9
 
 # This image is built and pushed via a concourse pipeline:
 #
@@ -20,3 +20,12 @@ tag:
 push: .built-docker-image
 	docker tag $(IMAGE) $(IMAGE):$(TAG)
 	docker push $(IMAGE):$(TAG)
+
+shell:
+	docker run --rm -it \
+		-v $$(pwd):/app \
+		-v $${HOME}/.kube:/app/.kube \
+		-e KUBECONFIG=/app/.kube/config \
+		-v $${HOME}/.aws:/root/.aws \
+		-v $${HOME}/.gnupg:/root/.gnupg \
+		-w /app $(IMAGE) bash
