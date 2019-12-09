@@ -104,4 +104,9 @@ RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/
   && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
   && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
 
+# Copy utility commands for teams who use this image as part
+# of their CI pipelines
+COPY circleci/setup-kube-auth /usr/local/bin/setup-kube-auth
+COPY circleci/tag-and-push-docker-image /usr/local/bin/tag-and-push-docker-image
+
 CMD /bin/bash
