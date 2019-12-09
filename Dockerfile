@@ -16,7 +16,8 @@ ENV \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
   TERRAFORM_VERSION=0.12.13 \
-  AWS_IAM_AUTHENTICATOR_VERSION="1.14.6/2019-08-22"
+  AWS_IAM_AUTHENTICATOR_VERSION="1.14.6/2019-08-22" \
+  EKSCTL_VERSION=0.11.1
 
 RUN \
   apk add \
@@ -72,6 +73,9 @@ RUN curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-r
 
 # Install istioctl
 RUN curl -sL https://github.com/istio/istio/releases/download/${ISTIOCTL_VERSION}/istio-${ISTIOCTL_VERSION}-linux.tar.gz | tar -xzC /usr/local/bin --strip-components 2 istio-${ISTIOCTL_VERSION}/bin/istioctl
+
+# Install eksctl
+RUN curl -sL "https://github.com/weaveworks/eksctl/releases/download/${EKSCTL_VERSION}/eksctl_Linux_amd64.tar.gz" | tar -xzC /usr/local/bin
 
 # Install kops
 RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
