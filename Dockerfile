@@ -77,6 +77,9 @@ RUN curl -sL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION
 # Install terraform
 RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin -
 
+# Install aws-iam-authenticator (required for EKS)
+RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
+
 # Ensure everything is executable
 RUN chmod +x /usr/local/bin/*
 
