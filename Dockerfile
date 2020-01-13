@@ -11,7 +11,7 @@ FROM golang:1.12.2-alpine3.9 as cp_tools_builder
 RUN apk add git make
 RUN \
     git clone https://github.com/ministryofjustice/cloud-platform-tools.git && \
-    cd cloud-platform-tools/cmd && \
+    cd cloud-platform-tools/cmd/cp-tools && \
     CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o cp-tools .
 
 
