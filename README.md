@@ -12,6 +12,7 @@ The repository produces two images:
   - `postgresql-client`
   - `ruby`
   - `terraform`
+  - `aws-iam-authenticator`
 - the CircleCI build image includes:
   - `aws`
   - `helm`
