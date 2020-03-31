@@ -10,8 +10,8 @@ FROM ruby:2.6.3-alpine
 
 ENV \
   HELM_VERSION=2.14.3 \
-  KOPS_VERSION=1.14.1 \
-  KUBECTL_VERSION=1.15.0 \
+  KOPS_VERSION=1.15.1 \
+  KUBECTL_VERSION=1.15.10 \
   TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
   TERRAFORM_VERSION=0.12.17
@@ -69,7 +69,7 @@ RUN git clone https://github.com/AGWA/git-crypt.git \
 RUN curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 
 # Install kops
-RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
+RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/v${KOPS_VERSION}/kops-linux-amd64
 
 # Install helm
 RUN curl -sL https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar -xzC /usr/local/bin --strip-components 1 linux-amd64/helm
