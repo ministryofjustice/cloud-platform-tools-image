@@ -20,7 +20,7 @@ The repository produces two images:
 
 ## Tagging
 
-Docker images are tagged using the git commit SHA and are available at `754256621582.dkr.ecr.eu-west-2.amazonaws.com/cloud-platform/tools`.
+Docker images are tagged using the git commit SHA and are available at [DockerHub](https://hub.docker.com/r/ministryofjustice/cloud-platform-tools)
 
 For the base image, the latest version is also tagged as `latest`.
 For the CircleCI images, the git commit SHA is suffixed with `-circleci`, the latest version is tagged as `circleci`.
