@@ -1,5 +1,5 @@
 # Build Concourse Terraform provider
-FROM golang:1.12.2-alpine3.9 as concourse_builder
+FROM golang:1.14.4-alpine3.12 as concourse_builder
 RUN apk add git make
 RUN \
     git clone https://github.com/alphagov/terraform-provider-concourse.git && \
