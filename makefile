@@ -18,7 +18,7 @@ tag:
 	docker tag $(IMAGE) $(IMAGE):$(TAG)
 
 push: .built-docker-image
-	docker tag $(IMAGE) $(IMAGE):$(TAG)
+	make tag
 	docker push $(IMAGE):$(TAG)
 
 shell:
