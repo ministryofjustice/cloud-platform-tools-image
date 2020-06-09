@@ -1,5 +1,5 @@
 IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.16
+TAG := 1.17
 
 # This image is built and pushed via a concourse pipeline:
 #
@@ -18,7 +18,7 @@ tag:
 	docker tag $(IMAGE) $(IMAGE):$(TAG)
 
 push: .built-docker-image
-	docker tag $(IMAGE) $(IMAGE):$(TAG)
+	make tag
 	docker push $(IMAGE):$(TAG)
 
 shell:
