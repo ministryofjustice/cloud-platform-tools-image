@@ -1,8 +1,9 @@
-# cloud-platform-tools-image
+# MoJ Cloud Platform 'tools' image
 
-The repository produces two images:
+A docker image with a set of useful software tools installed, for managing the cloud platform.
 
-- the main image includes:
+The image includes:
+
   - `aws`
   - `git-crypt`
   - `helm`
@@ -13,23 +14,20 @@ The repository produces two images:
   - `ruby`
   - `terraform`
   - `aws-iam-authenticator`
-- the CircleCI build image includes:
-  - `aws`
-  - `helm`
-  - `kubectl`
+  - `setup-kube-auth`
+  - `tag-and-push-docker-image`
 
-## Tagging
+## Building and tagging the tools image
 
-Docker images are tagged using the git commit SHA and are available at [DockerHub](https://hub.docker.com/r/ministryofjustice/cloud-platform-tools)
+A github action builds the tools image and pushes it to [DockerHub](https://hub.docker.com/r/ministryofjustice/cloud-platform-tools) whenever a new release is defined in github.
 
-For the base image, the latest version is also tagged as `latest`.
-For the CircleCI images, the git commit SHA is suffixed with `-circleci`, the latest version is tagged as `circleci`.
+The image is tagged with the release number.
 
-## CircleCI
+## setup-kube-auth
 
-The CircleCI image is based on the upstream `docker` image and includes `setup-kube-auth` (also set as the entrypoint) which aims to simplify using `kubectl` on CircleCI.
+This is a bash script that automates the process of authenticating to the cloud platform, for use in automated build pipelines.
 
-For each "environment" (kuberenetes context) that's required in CircleCI, it expects to find the following environment variables:
+For each "environment" (kuberenetes context) that's required in your build pipeline, the script expects to find the following environment variables:
 
 - `KUBE_ENV_XYZ_NAME`, the name of the cluster (which also determines its host)
 - `KUBE_ENV_XYZ_NAMESPACE`, the namespace to target in that cluster
@@ -37,4 +35,8 @@ For each "environment" (kuberenetes context) that's required in CircleCI, it exp
 
 It will configure `kubectl` with a context named `xyz`.
 
-[how-to-serviceaccount]: https://user-guide.cloud-platform.service.justice.gov.uk/tasks.html#creating-a-service-account-for-circleci
+## tag-and-push-docker-image
+
+This is a script to simplify the process of pushing a service team's docker image to DockerHub, and tagging it with the SHA1 of the latest commit.
+
+[how-to-serviceaccount]: https://user-guide.cloud-platform.service.justice.gov.uk/documentation/deploying-an-app/using-circleci-for-continuous-deployment.html#creating-a-service-account-for-circleci
