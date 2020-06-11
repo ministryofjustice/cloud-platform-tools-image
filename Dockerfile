@@ -2,7 +2,7 @@
 FROM golang:1.14.4-alpine3.12 as concourse_builder
 RUN apk add git make
 RUN \
-    git clone https://github.com/alphagov/terraform-provider-concourse.git && \
+    git clone https://github.com/alphagov/terraform-provider-concourse.git --branch v5.8.0 && \
     cd terraform-provider-concourse && \
     make build
 
