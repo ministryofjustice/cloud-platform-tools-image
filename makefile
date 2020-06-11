@@ -1,25 +1,7 @@
-IMAGE := ministryofjustice/cloud-platform-tools
-TAG := 1.17
-
-# This image is built and pushed via a concourse pipeline:
+# This image is built and pushed via a github action
 #
-# https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/tools-image/jobs/build-cp
+# See .github/workflows/docker-hub.yml
 #
-# So, it should not normally be necessary to use the build process defined here.
-#
-
-build: .built-docker-image
-
-.built-docker-image: Dockerfile makefile
-	docker build -t $(IMAGE) .
-	touch .built-docker-image
-
-tag:
-	docker tag $(IMAGE) $(IMAGE):$(TAG)
-
-push: .built-docker-image
-	make tag
-	docker push $(IMAGE):$(TAG)
 
 shell:
 	docker run --rm -it \
@@ -28,4 +10,4 @@ shell:
 		-e KUBECONFIG=/app/.kube/config \
 		-v $${HOME}/.aws:/root/.aws \
 		-v $${HOME}/.gnupg:/root/.gnupg \
-		-w /app $(IMAGE) bash
+		-w /app ministryofjustice/cloud-platform-tools bash
