@@ -31,7 +31,6 @@ RUN \
     git \
     gnupg \
     grep \
-    joe \
     jq \
     libc-dev \
     libxml2-dev \
