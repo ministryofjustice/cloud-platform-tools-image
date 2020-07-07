@@ -52,8 +52,8 @@ RUN \
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && wget \
-      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile \
-      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile.lock \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile.lock \
       \
       && gem install bundler \
       && bundle install
