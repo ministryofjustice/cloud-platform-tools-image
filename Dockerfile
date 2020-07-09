@@ -12,7 +12,6 @@ ENV \
   HELM_VERSION=3.2.1 \
   KOPS_VERSION=1.15.3 \
   KUBECTL_VERSION=1.15.10 \
-  TERRAFORM_AUTH0_VERSION=0.2.1 \
   TERRAFORM_PINGDOM_VERSION=1.1.1 \
   TERRAFORM_VERSION=0.12.17
 
@@ -32,7 +31,6 @@ RUN \
     git \
     gnupg \
     grep \
-    joe \
     jq \
     libc-dev \
     libxml2-dev \
@@ -53,8 +51,8 @@ RUN \
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && wget \
-      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile \
-      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/master/smoke-tests/Gemfile.lock \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile.lock \
       \
       && gem install bundler \
       && bundle install
@@ -85,10 +83,6 @@ RUN chmod +x /usr/local/bin/*
 
 # Create terraform plugins directory
 RUN mkdir -p ~/.terraform.d/plugins
-
-# Install terraform auth0 provider
-RUN curl -sL https://github.com/yieldr/terraform-provider-auth0/releases/download/v${TERRAFORM_AUTH0_VERSION}/terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION}_linux_amd64.tar.gz | tar xzv  \
-  && mv terraform-provider-auth0_v${TERRAFORM_AUTH0_VERSION} ~/.terraform.d/plugins/
 
 # Install Pingdom provider
 RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
