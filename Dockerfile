@@ -6,6 +6,11 @@ RUN \
     cd terraform-provider-concourse && \
     make build
 
+RUN \
+    git clone https://github.com/ministryofjustice/cloud-platform-cli.git && \
+    cd cloud-platform-cli && \
+    go build -o cloud-platform ./cmd/cloud-platform/main.go
+
 FROM ruby:2.6.3-alpine
 
 ENV \
@@ -58,6 +63,8 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && bundle install
 
 COPY --from=concourse_builder /go/terraform-provider-concourse /root/.terraform.d/plugins/
+
+COPY --from=concourse_builder /go/cloud-platform-cli/cloud-platform /usr/local/bin/
 
 # Install git-crypt
 RUN git clone https://github.com/AGWA/git-crypt.git \
