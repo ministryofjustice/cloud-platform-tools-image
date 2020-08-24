@@ -87,6 +87,43 @@ RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terra
 # Install aws-iam-authenticator (required for EKS)
 RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
 
+#•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
+
+# Install Java (needed for sonarqube cli)
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+
+# add a simple script that can auto-detect the appropriate JAVA_HOME value
+# based on whether the JDK or only the JRE is installed
+RUN { \
+        echo '#!/bin/sh'; \
+        echo 'set -e'; \
+        echo; \
+        echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+    } > /usr/local/bin/docker-java-home \
+    && chmod +x /usr/local/bin/docker-java-home
+
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
+
+ENV JAVA_VERSION 8u111
+ENV JAVA_ALPINE_VERSION 8.111.14-r0
+
+RUN set -x && apk add --no-cache openjdk8 && [ "$JAVA_HOME" = "$(docker-java-home)" ]
+
+# Install sonar qube cli
+ENV SONARQUBE_SCANNER_VERSION "4.4.0.2170"
+RUN curl -sL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONARQUBE_SCANNER_VERSION-linux.zip | unzip -d /opt -
+
+COPY sonar-scanner.sh /etc/profile.d/sonar-scanner.sh
+RUN /bin/bash -c "source /etc/profile.d/sonar-scanner.sh"
+
+#•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
+
+
+
 # Ensure everything is executable
 RUN chmod +x /usr/local/bin/*
 
