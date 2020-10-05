@@ -1,5 +1,7 @@
 # MoJ Cloud Platform 'tools' image
 
+[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-tools-image/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-tools-image/releases)
+
 A docker image with a set of useful software tools installed, for managing the cloud platform.
 
 The image includes:
