@@ -50,6 +50,7 @@ RUN \
     python3 \
     ruby-dev \
     util-linux \
+    docker-cli \
   \
   && pip3 install --upgrade pip \
   && pip3 install pygithub boto3 \
