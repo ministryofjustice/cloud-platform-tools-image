@@ -1,0 +1,13 @@
+# This is a version of the tools image which has the ruby gems which the
+# environments pipelines (apply, plan, and apply-changes) require
+# pre-installed.
+#
+# Pre-installing these gems cuts between 1 and 2 minutes from every
+# environments pipeline run, and so speeds things up significantly.
+
+FROM ministryofjustice/cloud-platform-tools:latest
+
+RUN wget https://raw.githubusercontent.com/ministryofjustice/cloud-platform-environments/main/Gemfile \
+    && wget https://raw.githubusercontent.com/ministryofjustice/cloud-platform-environments/main/Gemfile.lock \
+    && bundle config set without development test \
+    && bundle install
