@@ -7,11 +7,14 @@ A docker image with a set of useful software tools installed, for managing the c
 The image includes:
 
   - `aws`
+  - `docker-cli`
+  - `git`
   - `git-crypt`
   - `helm`
   - `kops`
   - `kubectl`
   - `openssh-keygen`
+  - `pingdom-terraform`
   - `postgresql-client`
   - `ruby`
   - `terraform`
