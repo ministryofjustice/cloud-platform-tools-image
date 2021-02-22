@@ -99,6 +99,11 @@ RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/
   && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
   && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
 
+# Install AWS provider (until https://github.com/hashicorp/terraform-provider-aws/issues/17712)
+RUN wget https://releases.hashicorp.com/terraform-provider-aws/3.28.0/terraform-provider-aws_3.28.0_linux_amd64.zip \
+  && unzip terraform-provider-aws_3.28.0_linux_amd64.zip && chmod +x terraform-provider-aws_v3.28.0_x5 \
+  && mv terraform-provider-aws_v3.28.0_x5 ~/.terraform.d/plugins/
+
 # Copy utility commands for teams who use this image as part
 # of their CI pipelines
 COPY circleci/setup-kube-auth /usr/local/bin/setup-kube-auth
