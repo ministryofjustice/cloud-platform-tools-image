@@ -1,11 +1,3 @@
-# Build Concourse Terraform provider
-FROM golang:1.14.4-alpine3.12 as concourse_builder
-RUN apk add git make
-RUN \
-    git clone https://github.com/alphagov/terraform-provider-concourse.git --branch v5.8.0 && \
-    cd terraform-provider-concourse && \
-    make build
-
 FROM golang:1.14.4-alpine3.12 as cloud_platform_cli_builder
 RUN apk add git
 RUN \
@@ -19,7 +11,7 @@ ENV \
   HELM_VERSION=3.4.0 \
   KOPS_VERSION=1.18.2 \
   KUBECTL_VERSION=1.17.12 \
-  TERRAFORM_PINGDOM_VERSION=1.1.1 \
+  TERRAFORM_PINGDOM_VERSION=1.1.3 \
   TERRAFORM_VERSION=0.12.30
 
 RUN \
@@ -65,8 +57,6 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && gem install bundler \
       && bundle install
 
-COPY --from=concourse_builder /go/terraform-provider-concourse /root/.terraform.d/plugins/
-
 COPY --from=cloud_platform_cli_builder /go/cloud-platform-cli/cloud-platform /usr/local/bin/
 
 # Install git-crypt
@@ -95,9 +85,9 @@ RUN chmod +x /usr/local/bin/*
 RUN mkdir -p ~/.terraform.d/plugins
 
 # Install Pingdom provider
-RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
-  && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
-  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
+RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_${TERRAFORM_PINGDOM_VERSION}_linux_amd64.zip \
+  && unzip terraform-provider-pingdom_${TERRAFORM_PINGDOM_VERSION}_linux_amd64.zip && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION} \
+  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION} ~/.terraform.d/plugins/
 
 # Install AWS provider (until https://github.com/hashicorp/terraform-provider-aws/issues/17712)
 RUN wget https://releases.hashicorp.com/terraform-provider-aws/3.28.0/terraform-provider-aws_3.28.0_linux_amd64.zip \
