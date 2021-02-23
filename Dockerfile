@@ -12,7 +12,9 @@ ENV \
   KOPS_VERSION=1.18.2 \
   KUBECTL_VERSION=1.17.12 \
   TERRAFORM_PINGDOM_VERSION=1.1.3 \
-  TERRAFORM_VERSION=0.12.30
+  TERRAFORM12_VERSION=0.12.30 \
+  TERRAFORM13_VERSION=0.13.6\
+  TERRAFORM14_VERSION=0.14.7
 
 RUN \
   apk add \
@@ -72,8 +74,14 @@ RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/do
 # Install helm
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
-# Install terraform
-RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin -
+# Install terraform12
+RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM12_VERSION}/terraform_${TERRAFORM12_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform12
+
+# Install terraform13
+RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM13_VERSION}/terraform_${TERRAFORM13_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform13
+
+# Install terraform14
+RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM14_VERSION}/terraform_${TERRAFORM14_VERSION}_linux_amd64.zip | unzip - && mv terraform /usr/local/bin/terraform14
 
 # Install aws-iam-authenticator (required for EKS)
 RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
