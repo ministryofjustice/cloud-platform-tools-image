@@ -11,8 +11,7 @@ ENV \
   HELM_VERSION=3.4.0 \
   KOPS_VERSION=1.18.2 \
   KUBECTL_VERSION=1.17.12 \
-  TERRAFORM_PINGDOM_VERSION=1.1.3 \
-  TERRAFORM_VERSION=0.12.30
+  TERRAFORM_PINGDOM_VERSION=1.1.1
 
 RUN \
   apk add \
@@ -72,8 +71,10 @@ RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/do
 # Install helm
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
-# Install terraform
-RUN curl -sL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip | unzip -d /usr/local/bin -
+# Install Terraform versions for upgrade
+COPY --from=hashicorp/terraform:0.12.30 /bin/terraform /usr/local/bin/terraform0.12
+COPY --from=hashicorp/terraform:0.13.6 /bin/terraform /usr/local/bin/terraform0.13
+COPY --from=hashicorp/terraform:0.14.7 /bin/terraform /usr/local/bin/terraform0.14
 
 # Install aws-iam-authenticator (required for EKS)
 RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
@@ -85,9 +86,9 @@ RUN chmod +x /usr/local/bin/*
 RUN mkdir -p ~/.terraform.d/plugins
 
 # Install Pingdom provider
-RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_${TERRAFORM_PINGDOM_VERSION}_linux_amd64.zip \
-  && unzip terraform-provider-pingdom_${TERRAFORM_PINGDOM_VERSION}_linux_amd64.zip && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION} \
-  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION} ~/.terraform.d/plugins/
+RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
+  && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
+  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
 
 # Install AWS provider (until https://github.com/hashicorp/terraform-provider-aws/issues/17712)
 RUN wget https://releases.hashicorp.com/terraform-provider-aws/3.28.0/terraform-provider-aws_3.28.0_linux_amd64.zip \
