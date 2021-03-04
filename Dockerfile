@@ -71,7 +71,6 @@ RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/do
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
 # Install Terraform versions for upgrade
-COPY --from=hashicorp/terraform:0.12.30 /bin/terraform /usr/local/bin/terraform0.12
 COPY --from=hashicorp/terraform:0.13.6 /bin/terraform /usr/local/bin/terraform0.13
 COPY --from=hashicorp/terraform:0.14.7 /bin/terraform /usr/local/bin/terraform0.14
 
