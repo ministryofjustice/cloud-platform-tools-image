@@ -10,8 +10,7 @@ FROM ruby:2.6.3-alpine
 ENV \
   HELM_VERSION=3.4.0 \
   KOPS_VERSION=1.18.2 \
-  KUBECTL_VERSION=1.17.12 \
-  TERRAFORM_PINGDOM_VERSION=1.1.1
+  KUBECTL_VERSION=1.17.12
 
 RUN \
   apk add \
@@ -84,11 +83,6 @@ RUN chmod +x /usr/local/bin/*
 
 # Create terraform plugins directory
 RUN mkdir -p ~/.terraform.d/plugins
-
-# Install Pingdom provider
-RUN wget https://github.com/russellcardullo/terraform-provider-pingdom/releases/download/v${TERRAFORM_PINGDOM_VERSION}/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
-  && chmod +x terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static \
-  && mv terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}_linux_amd64_static ~/.terraform.d/plugins/terraform-provider-pingdom_v${TERRAFORM_PINGDOM_VERSION}
 
 # Install AWS provider (until https://github.com/hashicorp/terraform-provider-aws/issues/17712)
 RUN wget https://releases.hashicorp.com/terraform-provider-aws/3.28.0/terraform-provider-aws_3.28.0_linux_amd64.zip \
