@@ -10,7 +10,7 @@ FROM ruby:2.6.3-alpine
 ENV \
   HELM_VERSION=3.4.0 \
   KOPS_VERSION=1.18.2 \
-  KUBECTL_VERSION=1.17.12
+  KUBECTL_VERSION=1.18.16
 
 RUN \
   apk add \
