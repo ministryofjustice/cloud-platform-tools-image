@@ -8,9 +8,9 @@ RUN \
 FROM ruby:2.6.3-alpine
 
 ENV \
-  HELM_VERSION=3.4.0 \
+  HELM_VERSION=3.5.4 \
   KOPS_VERSION=1.18.2 \
-  KUBECTL_VERSION=1.18.16
+  KUBECTL_VERSION=1.19.8
 
 RUN \
   apk add \
