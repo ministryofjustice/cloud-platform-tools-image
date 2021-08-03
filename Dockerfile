@@ -71,7 +71,7 @@ RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/do
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
 # Install Terraform
-COPY --from=hashicorp/terraform:0.14.7 /bin/terraform /usr/local/bin/terraform
+COPY --from=hashicorp/terraform:0.14.8 /bin/terraform /usr/local/bin/terraform
 
 # Install aws-iam-authenticator (required for EKS)
 RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
