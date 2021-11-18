@@ -10,7 +10,7 @@ FROM ruby:2.6.3-alpine
 ENV \
   HELM_VERSION=3.5.4 \
   KOPS_VERSION=1.18.2 \
-  KUBECTL_VERSION=1.19.8
+  KUBECTL_VERSION=1.20.7
 
 RUN \
   apk add \
@@ -81,11 +81,6 @@ RUN chmod +x /usr/local/bin/*
 
 # Create terraform plugins directory
 RUN mkdir -p ~/.terraform.d/plugins
-
-# Install AWS provider (until https://github.com/hashicorp/terraform-provider-aws/issues/17712)
-RUN wget https://releases.hashicorp.com/terraform-provider-aws/3.28.0/terraform-provider-aws_3.28.0_linux_amd64.zip \
-  && unzip terraform-provider-aws_3.28.0_linux_amd64.zip && chmod +x terraform-provider-aws_v3.28.0_x5 \
-  && mv terraform-provider-aws_v3.28.0_x5 ~/.terraform.d/plugins/
 
 # Copy utility commands for teams who use this image as part
 # of their CI pipelines
