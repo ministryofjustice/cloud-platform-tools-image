@@ -50,8 +50,6 @@ RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform
     curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
 
 # Install git-crypt
-# RUN apk add git-crypt --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-
 RUN git clone --depth 1 https://github.com/AGWA/git-crypt.git \
   && cd git-crypt && make && make install && cd - && rm -rf git-crypt
 
