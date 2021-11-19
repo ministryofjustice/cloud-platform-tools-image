@@ -1,26 +1,19 @@
-FROM golang:1.14.4-alpine3.12 as cloud_platform_cli_builder
-RUN apk add git
-RUN \
-    git clone https://github.com/ministryofjustice/cloud-platform-cli.git && \
-    cd cloud-platform-cli && \
-    go build -o cloud-platform ./cmd/cloud-platform/main.go
-
 FROM ruby:2.6.3-alpine
 
 ENV \
-  HELM_VERSION=3.5.4 \
+  HELM_VERSION=3.6.3 \
   KOPS_VERSION=1.18.2 \
-  KUBECTL_VERSION=1.20.7
+  KUBECTL_VERSION=1.20.7 \
+  TERRAFORM_VERSION=0.14.8 \
+  CLI_VERSION=latest
 
 RUN \
   apk add \
     --no-cache \
     --no-progress \
     --update \
-    --virtual \
-    build-deps \
-    build-base \
     bash \
+    build-base \
     ca-certificates \
     coreutils \
     curl \
@@ -29,10 +22,6 @@ RUN \
     gnupg \
     grep \
     jq \
-    libc-dev \
-    libxml2-dev \
-    libxslt-dev \
-    linux-headers \
     openssl \
     openssl-dev \
     openssh-keygen \
@@ -40,11 +29,9 @@ RUN \
     python3 \
     ruby-dev \
     util-linux \
-    docker-cli \
-  \
-  && pip3 install --upgrade pip \
-  && pip3 install pygithub boto3 \
-  && pip3 install awscli
+    \
+    && pip3 install --upgrade pip \
+    && pip3 install pygithub boto3
 
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
@@ -55,10 +42,17 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && gem install bundler \
       && bundle install
 
-COPY --from=cloud_platform_cli_builder /go/cloud-platform-cli/cloud-platform /usr/local/bin/
+# AWS CLI v2 is not in pip
+RUN curl -sLo awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip && unzip awscliv2.zip && ./aws/install && rm -frv aws*
+
+# Cloud Platform CLI
+RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform-cli/releases/${CLI_VERSION} | jq -r '.assets[] | select(.browser_download_url | match("linux_amd64")) | .browser_download_url') && \
+    curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
 
 # Install git-crypt
-RUN git clone https://github.com/AGWA/git-crypt.git \
+# RUN apk add git-crypt --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+RUN git clone --depth 1 https://github.com/AGWA/git-crypt.git \
   && cd git-crypt && make && make install && cd - && rm -rf git-crypt
 
 # Install kubectl
@@ -71,10 +65,7 @@ RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/do
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
 # Install Terraform
-COPY --from=hashicorp/terraform:0.14.8 /bin/terraform /usr/local/bin/terraform
-
-# Install aws-iam-authenticator (required for EKS)
-RUN curl -sLo /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
+RUN curl -sLo terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && unzip terraform.zip && mv terraform /usr/local/bin && rm -f terraform.zip
 
 # Ensure everything is executable
 RUN chmod +x /usr/local/bin/*
@@ -82,9 +73,7 @@ RUN chmod +x /usr/local/bin/*
 # Create terraform plugins directory
 RUN mkdir -p ~/.terraform.d/plugins
 
-# Copy utility commands for teams who use this image as part
-# of their CI pipelines
-COPY circleci/setup-kube-auth /usr/local/bin/setup-kube-auth
+# utility command for teams who use this image as part of their CI pipelines
 COPY circleci/tag-and-push-docker-image /usr/local/bin/tag-and-push-docker-image
 
 CMD /bin/bash
