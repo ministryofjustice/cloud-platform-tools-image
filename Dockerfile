@@ -17,6 +17,7 @@ RUN \
     ca-certificates \
     coreutils \
     curl \
+    docker-cli \
     findutils \
     git \
     gnupg \
