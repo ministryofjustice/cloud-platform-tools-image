@@ -32,7 +32,7 @@ RUN \
     util-linux \
     \
     && pip3 install --upgrade pip \
-    && pip3 install pygithub boto3
+    && pip3 install pygithub boto3 awscli
 
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
@@ -42,9 +42,6 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       \
       && gem install bundler \
       && bundle install
-
-# AWS CLI v2 is not in pip
-RUN curl -sLo awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip && unzip awscliv2.zip && ./aws/install && rm -frv aws*
 
 # Cloud Platform CLI
 RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform-cli/releases/${CLI_VERSION} | jq -r '.assets[] | select(.browser_download_url | match("linux_amd64")) | .browser_download_url') && \
