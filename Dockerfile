@@ -28,6 +28,7 @@ RUN \
     openssh-keygen \
     postgresql-client \
     python3 \
+    python3-dev \
     ruby-dev \
     util-linux \
     \
