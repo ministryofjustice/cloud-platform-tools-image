@@ -2,7 +2,6 @@ FROM ruby:2.6.3-alpine
 
 ENV \
   HELM_VERSION=3.6.3 \
-  KOPS_VERSION=1.18.2 \
   KUBECTL_VERSION=1.21.5 \
   TERRAFORM_VERSION=0.14.8 \
   CLI_VERSION=latest
@@ -35,6 +34,11 @@ RUN \
     && pip3 install --upgrade pip \
     && pip3 install pygithub boto3 awscli
 
+# Install Go
+COPY --from=golang:1.18-alpine /usr/local/go/ /usr/local/go/
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && wget \
@@ -54,9 +58,6 @@ RUN git clone --depth 1 https://github.com/AGWA/git-crypt.git \
 
 # Install kubectl
 RUN curl -sLo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
-
-# Install kops
-RUN curl -sLo /usr/local/bin/kops https://github.com/kubernetes/kops/releases/download/v${KOPS_VERSION}/kops-linux-amd64
 
 # Install helm
 RUN curl -L https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
