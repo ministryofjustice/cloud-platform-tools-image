@@ -35,6 +35,11 @@ RUN \
     && pip3 install --upgrade pip \
     && pip3 install pygithub boto3 awscli
 
+# Install Go
+COPY --from=golang:1.18-alpine /usr/local/go/ /usr/local/go/
+
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 # Build integration test environment
 RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && wget \
