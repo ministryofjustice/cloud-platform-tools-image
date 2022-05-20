@@ -9,3 +9,8 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/restructure-tests/go.sum \
       \
 		&& go mod download
+
+RUN go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo \
+	   go get github.com/onsi/gomega/...
+
+ENV PATH="/root/go/bin:${PATH}"
