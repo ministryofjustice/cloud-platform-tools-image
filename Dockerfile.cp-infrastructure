@@ -1,0 +1,11 @@
+# This image pulls the latest tools image and builds with the cloud-platform-infrastructure
+# dependencies built in. This makes this image smaller but reduces test runtime by half.
+
+FROM ministryofjustice/cloud-platform-tools:latest
+
+RUN mkdir -p /app/integration-test/; cd /app/integration-test \
+      && wget \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/restructure-tests/go.mod \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/restructure-tests/go.sum \
+      \
+		&& go mod download
