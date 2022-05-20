@@ -44,7 +44,10 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       && wget \
       https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile \
       https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/main/smoke-tests/Gemfile.lock \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/restructure-tests/go.mod \
+      https://raw.githubusercontent.com/ministryofjustice/cloud-platform-infrastructure/restructure-tests/go.sum \
       \
+		&& go mod download \
       && gem install bundler \
       && bundle install
 
