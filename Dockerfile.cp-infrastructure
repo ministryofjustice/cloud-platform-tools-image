@@ -11,8 +11,7 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
       \
 		&& go mod download
 
-# Install Ginkgo for fast integration test feedback.
-RUN go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo \
-	   go get github.com/onsi/gomega/...
+# Install Ginkgo binary for fast integration test feedback.
+RUN go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo
 
 ENV PATH="/root/go/bin:${PATH}"
