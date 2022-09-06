@@ -40,8 +40,10 @@ COPY --from=golang:1.18-alpine /usr/local/go/ /usr/local/go/
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Cloud Platform CLI
-RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform-cli/releases/${CLI_VERSION} | jq -r '.assets[] | select(.browser_download_url | match("linux_amd64")) | .browser_download_url') && \
-    curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
+RUN git clone -b apply-env https://github.com/ministryofjustice/cloud-platform-cli.git && cd cloud-platform-cli && git pull origin apply-env && make build \
+    && mv cloud-platform-1.18.2-next-4a4b187-20220906 /usr/local/bin
+# RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform-cli/releases/${CLI_VERSION} | jq -r '.assets[] | select(.browser_download_url | match("linux_amd64")) | .browser_download_url') && \
+#     curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
 
 # Install git-crypt
 RUN git clone --depth 1 https://github.com/AGWA/git-crypt.git \
