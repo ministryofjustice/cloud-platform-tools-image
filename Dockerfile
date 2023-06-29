@@ -61,7 +61,7 @@ COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=builder /aws-cli-bin/ /usr/local/bin/
 
 # Install Go
-COPY --from=golang:1.18-alpine /usr/local/go/ /usr/local/go/
+COPY --from=golang:1.19-alpine /usr/local/go/ /usr/local/go/
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
