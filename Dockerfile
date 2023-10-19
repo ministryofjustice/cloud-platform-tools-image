@@ -26,7 +26,7 @@ RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-
 FROM ruby:3.1.3-alpine3.16
 
 ENV \
-  HELM_VERSION=3.6.3 \
+  HELM_VERSION=3.7.2 \
   KUBECTL_VERSION=1.24.15 \
   TERRAFORM_VERSION=1.2.5 \
   CLI_VERSION=latest
