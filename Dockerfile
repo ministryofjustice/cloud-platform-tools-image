@@ -33,28 +33,29 @@ ENV \
 
 RUN \
   apk add \
-    --no-cache \
-    --no-progress \
-    --update \
-    bash \
-    build-base \
-    ca-certificates \
-    coreutils \
-    curl \
-    docker-cli \
-    findutils \
-    git \
-    gnupg \
-    grep \
-    jq \
-    openssl \
-    openssl-dev \
-    openssh-keygen \
-    postgresql-client \
-    python3 \
-    python3-dev \
-    ruby-dev \
-    util-linux
+  --no-cache \
+  --no-progress \
+  --update \
+  bash \
+  build-base \
+  ca-certificates \
+  coreutils \
+  curl \
+  docker-cli \
+  findutils \
+  git \
+  gnupg \
+  grep \
+  jq \
+  openssl \
+  openssl-dev \
+  openssh-keygen \
+  postgresql-client \
+  python3 \
+  python3-dev \
+  ruby-dev \
+  util-linux \
+  parallel
 
 # Install AWS cli
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
@@ -67,7 +68,7 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Cloud Platform CLI
 RUN URL=$(curl -sL https://api.github.com/repos/ministryofjustice/cloud-platform-cli/releases/${CLI_VERSION} | jq -r '.assets[] | select(.browser_download_url | match("linux_amd64")) | .browser_download_url') && \
-    curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
+  curl -sLo cli.tar.gz ${URL} && tar xzv -C /usr/local/bin -f cli.tar.gz && rm -f cli.tar.gz
 
 # Install git-crypt
 RUN git clone --depth 1 https://github.com/AGWA/git-crypt.git \
