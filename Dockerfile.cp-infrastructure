@@ -13,6 +13,6 @@ RUN mkdir -p /app/integration-test/; cd /app/integration-test \
 
 # Install Ginkgo binary for fast integration test feedback. Keep in sync with 
 # ministryofjustice/cloud-platform-infrastructure tests/go.mod
-RUN go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo@v2.13.2
+RUN go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo@v2.15.0
 
 ENV PATH="/root/go/bin:${PATH}"
