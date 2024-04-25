@@ -3,7 +3,7 @@
 set -eu
 
 CLUSTER_NAME=$1
-FILENAME=$(date -I)
+FILENAME="$(date -I)_${CLUSTER_NAME}.json"
 
 echo "Getting all vulnerabilities for ${CLUSTER_NAME}..."
 kubectl get vulnerabilityreports.aquasecurity.github.io -A -o json > ${CLUSTER_NAME}_vuln.json
@@ -33,10 +33,10 @@ jq -c '.items | .[]' ${CLUSTER_NAME}_vuln.json | while read i; do
 done
 echo "Vulnerabilitiy data enriched."
 
-cp updated.json "${FILENAME}.json"
+cp updated.json "${FILENAME}"
 
 echo "Pushing report to s3..."
-aws s3 cp "${FILENAME}.json" s3://cloud-platform-vulnerability-reports/$CLUSTER_NAME/
+aws s3 cp "${FILENAME}" s3://cloud-platform-vulnerability-reports/$CLUSTER_NAME/
 
 exit 0
 
