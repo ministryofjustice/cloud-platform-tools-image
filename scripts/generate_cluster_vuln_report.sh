@@ -6,16 +6,15 @@ CLUSTER_NAME=$1
 FILENAME=$(date -I)
 
 echo "Getting all vulnerabilities for ${CLUSTER_NAME}..."
-kubectl get vulnerabilityreports.aquasecurity.github.io -A -o json > live_2_vuln.json
+kubectl get vulnerabilityreports.aquasecurity.github.io -A -o json > ${CLUSTER_NAME}_vuln.json
 
 echo "Getting namespace annotations to enrich vulnerability report..."
-jq -r '.items|map(.metadata.namespace)|unique.[]' live_2_vuln.json | xargs -n 1 | xargs -I % bash -c 'kubectl get ns % -ojson > %.json'
+jq -r '.items|map(.metadata.namespace)|unique.[]' ${CLUSTER_NAME}_vuln.json | xargs -n 1 | xargs -I % bash -c 'kubectl get ns % -ojson > %.json'
 
-cp live_2_vuln.json updated.json
-
+cp ${CLUSTER_NAME}_vuln.json updated.json
 
 echo "Looping over vulnerabilities and enriching with relevant namespace details..."
-jq -c '.items.[]' live_2_vuln.json | while read i; do
+jq -c '.items.[]' ${CLUSTER_NAME}_vuln.json | while read i; do
   OBJ_UID=$(echo $i | jq -r '.metadata.uid')
   NS=$(echo $i | jq -r '.metadata.namespace')
 
