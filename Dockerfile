@@ -55,7 +55,8 @@ RUN \
   python3-dev \
   ruby-dev \
   util-linux \
-  parallel
+  parallel \
+  neovim
 
 # Install AWS cli
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
