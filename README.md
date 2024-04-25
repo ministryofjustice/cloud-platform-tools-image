@@ -21,6 +21,7 @@ The image includes:
   - `aws-iam-authenticator`
   - `setup-kube-auth`
   - `tag-and-push-docker-image`
+  - `jq`
 
 ## Building and tagging the tools image
 
