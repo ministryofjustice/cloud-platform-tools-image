@@ -62,8 +62,6 @@ RUN \
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=builder /aws-cli-bin/ /usr/local/bin/
 
-COPY scripts/ scripts/
-
 # Install Go
 COPY --from=golang:1.21-alpine /usr/local/go/ /usr/local/go/
 
