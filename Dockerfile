@@ -56,7 +56,8 @@ RUN \
   ruby-dev \
   util-linux \
   parallel \
-  neovim
+  neovim \
+  github-cli
 
 # Install AWS cli
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
