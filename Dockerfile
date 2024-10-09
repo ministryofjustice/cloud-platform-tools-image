@@ -23,6 +23,19 @@ RUN /aws-cli-bin/aws --version
 RUN rm -rf /usr/local/aws-cli/v2/current/dist/awscli/examples
 RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete
 
+# Install Go
+FROM golang:1.23-alpine as go-builder
+
+RUN mkdir app
+
+WORKDIR /app
+
+COPY . ./
+
+RUN go mod download
+
+RUN go build pkg/delete_job/delete_job.go
+
 FROM ruby:3.1.3-alpine3.16
 
 ENV \
@@ -62,10 +75,8 @@ RUN \
 # Install AWS cli
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=builder /aws-cli-bin/ /usr/local/bin/
-
-# Install Go
-COPY --from=golang:1.21-alpine /usr/local/go/ /usr/local/go/
-
+COPY --from=go-builder /app/delete_job .
+COPY --from=go-builder /usr/local/go/ /usr/local/go/ 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Cloud Platform CLI
