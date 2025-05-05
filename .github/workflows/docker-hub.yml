@@ -23,7 +23,7 @@ jobs:
 
       - name: Get Tags for tools Image
         id: metadata-tools
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: ministryofjustice/cloud-platform-tools
           tags: |
@@ -39,7 +39,7 @@ jobs:
       
       - name: Get Tags for env pipeline tools
         id: metadata-env-tools
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: ministryofjustice/cloud-platform-pipeline-tools
           tags: |
@@ -55,7 +55,7 @@ jobs:
       
       - name: Get Tags for infrastructure pipeline image
         id: metadata-infra-tools
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
         with:
           images: ministryofjustice/cloud-platform-infrastructure
           tags: |
